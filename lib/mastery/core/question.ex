@@ -1,4 +1,6 @@
 defmodule Mastery.Core.Question do
+  alias Mastery.Core.Template
+  
   defstruct ~w[asked substitutions template]a
 
   def new(%Template{} = template) do
@@ -6,6 +8,7 @@ defmodule Mastery.Core.Question do
     |> Enum.map(&build_substitution/1)
     |> evaluate(template)
   end
+  
   defp build_substitution({name, choices_or_generator}) do
     {name, choose(choices_or_generator)}
   end
@@ -27,7 +30,7 @@ defmodule Mastery.Core.Question do
   defp evaluate(substitutions, template) do
     %__MODULE__{
       asked: compile(template, substitutions),
-      substitusions: substitutions,
+      substitutions: substitutions,
       template: template
     }
   end
